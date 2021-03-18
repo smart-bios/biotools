@@ -1,7 +1,7 @@
 <template>
     <div>
         
-        <v-navigation-drawer app permanent clipped expand-on-hover  color="teal lighten-5">
+        <v-navigation-drawer app permanent clipped expand-on-hover dark  color="blue-grey lighten-2">
             <template v-slot:prepend>
                 <v-list-item two-line>
                 <v-list-item-avatar>
