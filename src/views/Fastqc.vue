@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <div class="fastqc">
+    <h1>Fastqc</h1>
   </div>
 </template>
 
@@ -7,7 +8,7 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home',
+  name: 'Fastqc',
   data(){
     return {
       

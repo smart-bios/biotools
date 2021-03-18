@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <div class="unicycler">
+    <h1>Unicycler</h1>
   </div>
 </template>
 
@@ -7,7 +8,7 @@
 // @ is an alias to /src
 
 export default {
-  name: 'Home',
+  name: 'Unicycler',
   data(){
     return {
       

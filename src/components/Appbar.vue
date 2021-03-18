@@ -18,20 +18,30 @@
 
             <v-divider></v-divider>
 
-            <v-list dense nav>
-                <v-list-item
+            <v-list dense>
+                <v-list-group
                     v-for="item in items"
                     :key="item.title"
-                    link
+                    :prepend-icon="item.action"
+                    no-action
                 >
-                    <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-icon>
-
+                <template v-slot:activator>
                     <v-list-item-content>
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                    </v-list-item-content>
+                </template>
+
+                <v-list-item
+                    v-for="child in item.items"
+                    :key="child.title"
+                    :to="child.to"
+                    
+                >
+                    <v-list-item-content>
+                        <v-list-item-title v-text="child.title"></v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                 </v-list-group>
             </v-list>
         </v-navigation-drawer>
         
@@ -62,9 +72,49 @@ export default {
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-          { title: 'Photos', icon: 'mdi-image' },
-          { title: 'About', icon: 'mdi-help-box' },
+            {
+                action: 'mdi-content-cut',
+                title: 'Pre-assembly',
+                items: [
+                    { title: 'FastQC', to: 'fastqc'},
+                    { title: 'BBDuk', to: 'bbduk' },
+                    { title: 'FastQ Screen', to: 'fastq-screen' },
+                ]
+            },
+            {
+                action: 'mdi-chart-gantt',
+                title: 'Assembly',
+                items: [
+                    { title: 'Unicycler', to: 'unicycler' },
+                    { title: 'MaSuRCA', to: 'masurca' },
+                    { title: 'Platanus-allee', to: 'platanus' }
+
+                ]
+            },
+
+            {
+                action: 'mdi-equal-box',
+                title: 'Post-assembly',
+                items: [
+                    { title: 'Quast', to: 'quast' },
+                    { title: 'Busco', to: 'busco' }
+                ]
+            },
+            {
+                action: 'mdi-package-variant-closed',
+                title: 'Genomic Prediction',
+                items: [
+                    { title: 'DFAST', to: 'dfast' },
+                    { title: 'Prokka', to: 'prokka' },
+                    { title: 'Augustus', to: 'augustus' },
+                ]
+            },
+            {
+                action: 'mdi-puzzle',
+                title: 'Functional Annotation',
+                items: [{ title: 'eggNOG', to: 'eggnog' }]
+                
+            }
         ],
       }
     }

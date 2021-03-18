@@ -4,7 +4,9 @@
     <Appbar />
     
     <v-content>
-     <router-view/>
+      <v-container class="pa-3">
+        <router-view/>
+      </v-container>
     </v-content>
 
     <Footer />
@@ -16,14 +18,9 @@ import Appbar from './components/Appbar'
 import Footer from './components/Footer'
 export default {
   name: 'App',
-
   components: {
     Appbar,
     Footer
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>
