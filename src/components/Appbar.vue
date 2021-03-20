@@ -52,12 +52,12 @@
             dark
         >
             <v-toolbar-title>
-                <h2>BIOTOOLS</h2>
+                <v-btn text to="/">BIOTOOLS</v-btn>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-btn text>
+            <v-btn text to="/login">
                 <span class="mr-2">Login</span>
                 <!-- <v-icon>mdi-open-in-new</v-icon> -->
             </v-btn>

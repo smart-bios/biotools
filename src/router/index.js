@@ -1,18 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Store from '../store'
 import Home from '../views/Home.vue'
-/* import Fastqc from '../views/Fastqc.vue'
-import BBduk from '../views/BBduk.vue'
-import FastqScreen from '../views/Fastq-screen.vue'
-import Unicycler from '../views/Unicycler.vue'
-import Masurca from '../views/Masurca.vue'
-import Platanus from '../views/Platanus.vue'
-import Quast from '../views/Quast.vue'
-import Busco from '../views/Busco.vue'
-import Dfast from '../views/Dfast.vue'
-import Prokka from '../views/Prokka'
-import Augustus from '../views/Augustus.vue' */
-
 
 Vue.use(VueRouter)
 
@@ -20,75 +9,110 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue'),
+    
   },
   {
     path: '/fastqc',
     name: 'Fastqc',
-    component: () => import('../views/Fastqc.vue')
+    component: () => import('../views/Fastqc.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/bbduk',
     name: 'BBduk',
-    component: () => import('../views/Bbduk.vue')
+    component: () => import('../views/Bbduk.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/fastq-screen',
     name: 'FastqScreen',
-    component: () => import('../views/Fastq-screen.vue')
+    component: () => import('../views/Fastq-screen.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/unicycler',
     name: 'Unicycler',
-    component: () => import('../views/Unicycler.vue')
+    component: () => import('../views/Unicycler.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/masurca',
     name: 'Masurca',
-    component: () => import('../views/Masurca.vue')
+    component: () => import('../views/Masurca.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/platanus',
     name: 'Platanus',
-    component: () => import('../views/Platanus.vue')
+    component: () => import('../views/Platanus.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/quast',
     name: 'Quast',
-    component: () => import('../views/Quast.vue')
+    component: () => import('../views/Quast.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/busco',
     name: 'Busco',
-    component: () => import('../views/Busco.vue')
+    component: () => import('../views/Busco.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/dfast',
     name: 'Dfast',
-    component: () => import('../views/Dfast.vue')
+    component: () => import('../views/Dfast.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/prokka',
     name: 'Prokka',
-    component: () => import('../views/Prokka.vue')
+    component: () => import('../views/Prokka.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/augustus',
     name: 'Augustus',
-    component: () => import('../views/Augustus.vue')
+    component: () => import('../views/Augustus.vue'),
+    meta: {
+      user: true
+    }
   },
   {
     path: '/eggnog',
     name: 'eggNOG',
-    component: () => import('../views/Eggnog.vue')
+    component: () => import('../views/Eggnog.vue'),
+    meta: {
+      user: true
+    }
   },
 ]
 
@@ -96,6 +120,23 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+
+  const rutasProtegida = to.matched.some(record => record.meta.user);
+  
+  if(rutasProtegida){
+      //console.log(`rutas protegida: ${rutasProtegida}`)
+    if(Store.state.user && Store.state.user.role === 'ADMIN'){
+      next()
+    }else{
+      console.log("El usuario no ha iniciado session")
+      next({ name:'Login' })
+    } 
+  }else{
+    next()
+  }
 })
 
 export default router
