@@ -3,11 +3,11 @@
     
     <Appbar />
     
-    <v-content>
-      <v-container class="pa-3">
+    <v-main>
+      <v-container fluid class="pa-3">
         <router-view/>
       </v-container>
-    </v-content>
+    </v-main>
 
     <Footer />
   </v-app>

@@ -1,7 +1,6 @@
 <template>
     <div>
-        
-        <v-navigation-drawer app permanent clipped expand-on-hover dark  color="blue-grey lighten-2">
+        <v-navigation-drawer app permanent clipped expand-on-hover dark v-if="user.username">
             <template v-slot:prepend>
                 <v-list-item two-line>
                 <v-list-item-avatar>
@@ -10,8 +9,8 @@
                     </v-avatar>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                    <v-list-item-title>Username</v-list-item-title>
-                    <v-list-item-subtitle>Bienvenido.</v-list-item-subtitle>
+                    <v-list-item-title>{{user.username}}</v-list-item-title>
+                    <v-list-item-subtitle>{{user.email}}</v-list-item-subtitle>
                 </v-list-item-content>
                 </v-list-item>
             </template>
@@ -56,16 +55,29 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
+            <div v-if="user.username">
+                <v-btn text to="/storage">
+                    <span class="mr-2">Storage</span>
+                </v-btn>
+                <v-divider vertical></v-divider>
 
-            <v-btn text to="/login">
+                <v-btn text @click="logout">
+                    <span class="mr-2">Logout</span>
+                </v-btn>
+            </div>
+            <div v-else>
+                <v-btn text to="/login">
                 <span class="mr-2">Login</span>
-                <!-- <v-icon>mdi-open-in-new</v-icon> -->
             </v-btn>
+            </div>
+            
+            
         </v-app-bar>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 export default {
     name: 'Appbar',
 
@@ -117,6 +129,13 @@ export default {
             }
         ],
       }
-    }
+    },
+    computed: {
+        ...mapState(['user'])
+    },
+
+    methods: {
+        ...mapActions(['logout'])
+    },
 }
 </script>

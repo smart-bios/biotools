@@ -1,11 +1,13 @@
 <template>
   <div class="busco">
     <h1>Busco</h1>
+    {{fastaFiles}}
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Busco',
@@ -13,6 +15,11 @@ export default {
     return {
       
     }
+    
+  },
+  
+  computed: {
+    ...mapGetters(['fastaFiles'])
   }
 
 }

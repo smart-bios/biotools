@@ -19,6 +19,14 @@ const routes = [
     
   },
   {
+    path: '/storage',
+    name: 'Storage',
+    component: () => import('../views/Storage.vue'),
+    meta: {
+      user: true
+    }
+  },
+  {
     path: '/fastqc',
     name: 'Fastqc',
     component: () => import('../views/Fastqc.vue'),
@@ -132,7 +140,7 @@ router.beforeEach((to, from, next) => {
       next()
     }else{
       console.log("El usuario no ha iniciado session")
-      next({ name:'Login' })
+      next({ name:'Home' })
     } 
   }else{
     next()
