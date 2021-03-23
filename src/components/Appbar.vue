@@ -109,7 +109,8 @@ export default {
                 title: 'Post-assembly',
                 items: [
                     { title: 'Quast', to: 'quast' },
-                    { title: 'Busco', to: 'busco' }
+                    { title: 'Busco', to: 'busco' },
+                    { title: 'Blast', to: 'blast' }
                 ]
             },
             {

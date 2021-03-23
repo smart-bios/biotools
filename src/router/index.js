@@ -91,6 +91,14 @@ const routes = [
     }
   },
   {
+    path: '/blast',
+    name: 'Blast',
+    component: () => import('../views/Blast.vue'),
+    meta: {
+      user: true
+    }
+  },
+  {
     path: '/dfast',
     name: 'Dfast',
     component: () => import('../views/Dfast.vue'),
