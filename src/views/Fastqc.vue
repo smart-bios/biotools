@@ -6,20 +6,9 @@
       <v-card-text>
         <p>FastQC permite realizar controles de calidad en archivos de secuencias obtenidos de métodos de secuenciación. Aporta un conjunto de análisis que te pueden dar una idea general rápida de si los datos tienen algún problema antes de proseguir con el análisis o si por el contrario cumplen los estándares de calidad aportados por el sistema.</p> 
 
-
-
-
       </v-card-text>
-
-
-
-
-
     </v-card>
-    <!-- h1>Fastqc</h1>
-    <v-divider dark></v-divider>
-    <p>FastQC permite realizar controles de calidad en archivos de secuencias obtenidos de métodos de secuenciación. Aporta un conjunto de análisis que te pueden dar una idea general rápida de si los datos tienen algún problema antes de proseguir con el análisis o si por el contrario cumplen los estándares de calidad aportados por el sistema.</p> -->
-     <!-- <v-select 
+    <v-select 
       dense 
       v-model="input.file" 
       :items="fastqFiles" 
@@ -29,7 +18,7 @@
       hint="Seleccione un ensamble"
       persistent-hint
       outlined>
-    </v-select> -->
+    </v-select>
   </div>
 </template>
 

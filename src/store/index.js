@@ -40,7 +40,7 @@ export default new Vuex.Store({
       commit("setToken", token);
       commit("setUser", decode(token));
       window.localStorage.setItem("token", token)
-      router.push({name: 'Home'});
+      router.push({name: 'Home'}, () => {});
       
       return decode(token)
       
@@ -51,7 +51,7 @@ export default new Vuex.Store({
       if(token) {
         commit("setToken", token);
         commit("setUser", decode(token));
-        router.push({name: 'Home'});
+        router.push({name: 'Home'}, () => {});
       }   
     },
 
@@ -59,7 +59,7 @@ export default new Vuex.Store({
       commit("setToken", '');
       commit("setUser", {});
       window.localStorage.removeItem("token");
-      router.push({name: 'Login'});
+      router.push({name: 'Login'}, () => {});
     }
   },
 

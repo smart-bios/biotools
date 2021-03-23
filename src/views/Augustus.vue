@@ -1,6 +1,14 @@
 <template>
   <div class="augustus">
-    <h1>Augustus</h1>
+    <v-card elevation="12">
+      <v-card-title>Augustus</v-card-title>
+      <v-card-subtitle>
+
+      </v-card-subtitle>
+      <v-card-text>
+
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 

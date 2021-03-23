@@ -22,5 +22,9 @@ export default {
     Appbar,
     Footer
   },
+  created () {
+    this.$store.dispatch("autoLogin");
+  },
+
 };
 </script>

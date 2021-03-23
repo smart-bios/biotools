@@ -1,6 +1,14 @@
 <template>
   <div class="bbduk">
-    <h1>BBduk</h1>
+    <v-card elevation="12">
+      <v-card-title>BBduk</v-card-title>
+      <v-card-subtitle>
+        
+      </v-card-subtitle>
+      <v-card-text>
+        <p> “Duk” stands for Decontamination Using Kmers. BBDuk was developed to combine most common data-quality-related trimming, filtering, and masking operations into a single high-performance tool.</p>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
