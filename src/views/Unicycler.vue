@@ -4,7 +4,7 @@
       <v-card-title>Unicycler</v-card-title>
       <v-card-subtitle>Resolving bacterial genome assemblies from short and long sequencing reads.</v-card-subtitle>
       <v-card-text>
-        <p>Unicycler is an assembly pipeline for bacterial genomes. It can assemble Illumina-only read sets where it functions as a SPAdes-optimiser. It can also assembly long-read-only sets (PacBio or Nanopore) where it runs a miniasm+Racon pipeline. For the best possible assemblies, give it both Illumina reads and long reads, and it will conduct a hybrid assembly.</p>
+        
         <v-row>
             <v-col cols="12" md="3">
                 <v-card class="pa-3" color="grey lighten-4">
@@ -13,7 +13,7 @@
                       v-model="input.name" 
                       :counter="12" 
                       label="Project Name"
-                      :rules="[rules.required, rules.length, rules.upper]"
+                      :rules="[rules.required, rules.length]"
                     ></v-text-field>
                     <v-select
                         v-model="input.fq1"
@@ -42,7 +42,12 @@
                   <v-card-actions>
                     <v-btn @click="$refs.form.reset()"> Clear</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn :disabled="!form" class="white--text" color="deep-purple accent-4">
+                    <v-btn 
+                      :disabled="!form" 
+                      class="white--text"
+                      color="deep-purple accent-4"
+                      @click="runUnicycler"
+                    >
                       Run Unicycler
                     </v-btn>
                   </v-card-actions>
@@ -54,7 +59,7 @@
             </v-col>
             <v-col cols="12" md="9">
                 <v-card class="pa-3">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ipsa quod doloremque eaque quos saepe dolores totam velit enim ipsum, fugit dolore libero harum aliquid nemo mollitia error exercitationem impedit?</p>
+                    <p>Unicycler is an assembly pipeline for bacterial genomes. It can assemble Illumina-only read sets where it functions as a SPAdes-optimiser. It can also assembly long-read-only sets (PacBio or Nanopore) where it runs a miniasm+Racon pipeline. For the best possible assemblies, give it both Illumina reads and long reads, and it will conduct a hybrid assembly.</p>
                 </v-card>
             </v-col>
         </v-row>
@@ -85,10 +90,14 @@ export default {
         upper: v => /^[A-Z]*$/.test(v) || 'Only Uppercase',
         length:  v => (v && v.length <= 15) || `Name must be less than 10 characters`,
         required: v => !!v || 'This field is required',
-      },
-
-      
+      },      
     }
-  }
+  },
+
+  methods: {
+    runUnicycler() {
+      console.log(this.input)
+    }
+  },
 }
 </script>
