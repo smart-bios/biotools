@@ -7,35 +7,48 @@
         <p>Unicycler is an assembly pipeline for bacterial genomes. It can assemble Illumina-only read sets where it functions as a SPAdes-optimiser. It can also assembly long-read-only sets (PacBio or Nanopore) where it runs a miniasm+Racon pipeline. For the best possible assemblies, give it both Illumina reads and long reads, and it will conduct a hybrid assembly.</p>
         <v-row>
             <v-col cols="12" md="3">
-                <v-card class="pa-3">
-                   <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-text-field v-model="input.name" :counter="10" :rules="nameRules" label="Project Name" required></v-text-field>
+                <v-card class="pa-3" color="grey lighten-4">
+                  <v-form ref="form" v-model="form">
+                    <v-text-field 
+                      v-model="input.name" 
+                      :counter="12" 
+                      label="Project Name"
+                      :rules="[rules.required, rules.length, rules.upper]"
+                    ></v-text-field>
                     <v-select
-                          v-model="input.fq1"
-                          :items="items"
-                          :rules="[v => !!v || 'Item is required']"
-                          label="Forward reads."
-                          required
+                        v-model="input.fq1"
+                        :items="items"
+                        label="Forward reads."
+                        :rules="[rules.required]"
                     ></v-select>
                     <v-select
                         v-model="input.fq2"
                         :items="items"
-                        :rules="[v => !!v || 'Item is required']"
-                        label="Reverse reads."
-                        required
+                        label="Forward reads."
+                        :rules="[rules.required]"
                     ></v-select>
                     <v-select
                         v-model="input.mode"
-                        :items="items"
-                        :rules="[v => !!v || 'Item is required']"
+                        :items="modes"
                         label="Bridging mode."
-                        required
+                       :rules="[rules.required]"
                     ></v-select>
-                    <v-text-field v-model="input.length_fasta" label="Min fasta lengt" required></v-text-field>
-
-                    <v-btn dark color= "indigo">Run Unicycler</v-btn>
-                    <v-btn text x-small to="/storage">Upload File</v-btn>
+                    <v-text-field 
+                      v-model="input.length_fasta" 
+                      label="Min fasta length">
+                      :rules="[rules.required]"
+                    </v-text-field>
                   </v-form>
+                  <v-card-actions>
+                    <v-btn @click="$refs.form.reset()"> Clear</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn :disabled="!form" class="white--text" color="deep-purple accent-4">
+                      Run Unicycler
+                    </v-btn>
+                  </v-card-actions>
+
+                   <!--  <v-btn dark color= "indigo">Run Unicycler</v-btn>
+                    <v-btn text x-small to="/storage">Upload File</v-btn> -->
                 </v-card>
                     
             </v-col>
@@ -57,6 +70,7 @@ export default {
   name: 'Unicycler',
   data(){
     return {
+      form: false,
       input: {
         name: 'UNICYCLER01',
         fq1: null,
@@ -65,25 +79,15 @@ export default {
         length_fasta: 500,
         user: this.$store.state.user
       },
-       valid: true,
-      name: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      select: null,
-      items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-      ],
-      checkbox: false,
+      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      modes: ['conservative','normal', 'bold'],
+      rules: {
+        upper: v => /^[A-Z]*$/.test(v) || 'Only Uppercase',
+        length:  v => (v && v.length <= 15) || `Name must be less than 10 characters`,
+        required: v => !!v || 'This field is required',
+      },
+
+      
     }
   }
 }

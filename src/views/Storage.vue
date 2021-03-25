@@ -6,51 +6,68 @@
             <v-card-text>
                 <v-dialog v-model="dialog" width="500">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="indigo darken-1" dark v-bind="attrs" v-on="on">
+                        <v-btn
+                            color="blue-grey"
+                            class="ma-2 white--text"
+                            v-bind="attrs"
+                            v-on="on"
+                        >
                             Upload File
+                            <v-icon right dark>mdi-cloud-upload</v-icon>
                         </v-btn>
                     </template>
 
                     <v-card>
                         <v-card-title class="headline grey lighten-2">Upload Files</v-card-title>
                         <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-file-input 
-                                            v-model="file.file"
-                                            counter 
-                                            show-size 
-                                            accept=".fna, .fasta, .faa, .fa, .faa, .fastq, .fq , .gz"
-                                        ></v-file-input>
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <v-select
-                                            v-model="file.type"
-                                            :items="items"
-                                            item-text="text"
-                                            item-value="value"
-                                            label="Please select the file format *"
-                                        ></v-select>
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <v-text-field
-                                        v-model="file.description"
-                                        label="Description"
-                                        required
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                            <v-form
+                                ref="form"
+                                v-model="form"
+                                class="pa-4"
+                            >
+                                <v-file-input 
+                                    v-model="file.file"
+                                    counter 
+                                    show-size 
+                                    accept=".fna, .fasta, .faa, .fa, .faa, .fastq, .fq , .gz"
+                                    small-chips
+                                    label="File input"
+                                    :rules="[rules.required]"
+                                ></v-file-input>
+                                <v-select
+                                    v-model="file.type"
+                                    :items="items"
+                                    item-text="text"
+                                    item-value="value"
+                                    label="Please select the file format *"
+                                    :rules="[rules.required]"
+                                ></v-select>
+                                <v-textarea
+                                    v-model="file.description"
+                                    auto-grow
+                                    filled
+                                    color="deep-purple"
+                                    label="Description"
+                                    rows="1"
+                                ></v-textarea>
                             <small>*indicates required field</small>
                             <template >
                                 <v-progress-linear v-show="progress" :value="value"></v-progress-linear>
                             </template>
+                        </v-form>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" @click="dialog = false">Close</v-btn>
-                            <v-btn color="primary" @click="sendFile">Upload</v-btn>
+                            <v-btn color="blue-grey" small @click="clear">Close</v-btn>
+                            <v-btn
+                                :disabled="!form"
+                                class="white--text"
+                                color="blue-grey"
+                                small
+                                @click="sendFile"
+                            >
+                               Upload
+                            </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -59,17 +76,26 @@
                 
                 <v-subheader>Uploaded</v-subheader>
                 <v-row>
-                    <v-col cols="12" xs="12" sm="4" md="4" lg="2" v-for="item in files" :key="item._id">
-                       
+                    <v-col cols="12" xs="12" sm="6" md="4" lg="2" v-for="item in files" :key="item._id">
+                        <v-card 
+                            elevation="5"
+                            max-width="350"
+                        >
+                            <v-list-item three-line>
+                                <v-list-item-content>
+                                    <div class="overline mb-4">
+                                        <v-chip class="ma-2" x-small color="indigo" text-color="white">{{item.type}}</v-chip> 
+                                    </div>
+                                    <v-list-item-title class="headline mb-1">
+                                        {{item.filename}}
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>{{item.description}}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
 
-                        <v-card elevation="5">
-                            <v-card-title>{{item.filename}}</v-card-title>
-                            <v-card-subtitle>{{item.type}}</v-card-subtitle>
-                            <v-card-text>{{item.description}}</v-card-text>
                             <v-card-actions>
-                                <v-spacer></v-spacer>
                                 <v-btn color="red lighten-1" dark x-small elevation="3" @click="deleteFile(item._id)">Delete</v-btn>
-                                <v-btn color="green lighten-1" dark x-small elevation="3">Download</v-btn>
+                                <v-btn color="green lighten-1" dark x-small elevation="3" @click="download(item._id, item.filename)">Download</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -86,6 +112,7 @@ import { mapState, mapActions} from 'vuex'
         name:'Storage',
         data() {
             return {
+                form: false,
                 dialog: false,
                 progress:false,
                 value: 0,
@@ -99,7 +126,10 @@ import { mapState, mapActions} from 'vuex'
                     file: null,
                     type: '',
                     description: ''
-                }
+                },
+                rules: {
+                    required: v => !!v || 'This field is required',
+                },
             }
         },
         computed: {
@@ -135,14 +165,36 @@ import { mapState, mapActions} from 'vuex'
                 }
             },
 
-            async deleteFile(id){
+            async deleteFile(file){
                 try {
                     confirm('Estás segura de que quieres eliminar este archivo?') &&
-                    await this.axios.delete(`/storage/delete/${id}`)
+                    await this.axios.delete(`/storage/delete/${file}`)
                     this.loadStorage(this.$store.state.user._id);
                 } catch (error) {
                     console.log(error)
                 }
+            },
+
+            async download(file, filename){
+              try {
+                  let res = await this.axios.get(`/storage/download/${file}`, {responseType: 'blob'})
+                  let url = window.URL.createObjectURL(new Blob([res.data]));
+                  let link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', `${filename}`);
+                  document.body.appendChild(link);
+                  link.click();
+              } catch (error) {
+                  console.log(error)
+              }
+            },
+
+            clear(){
+                this.dialog = false
+                this.file.file = null,
+                this.file.type = '',
+                this.file.description = ''
+                
             }
             //...mapActions(['loadStorage'])
            /*  async loadFiles(){
