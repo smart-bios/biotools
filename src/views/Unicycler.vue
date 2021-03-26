@@ -11,7 +11,7 @@
                   <v-form ref="form" v-model="form">
                     <v-text-field 
                       v-model="input.name" 
-                      :counter="12" 
+                      :counter="15" 
                       label="Project Name"
                       :rules="[rules.required, rules.length]"
                     ></v-text-field>
@@ -88,7 +88,7 @@ export default {
       modes: ['conservative','normal', 'bold'],
       rules: {
         upper: v => /^[A-Z]*$/.test(v) || 'Only Uppercase',
-        length:  v => (v && v.length <= 15) || `Name must be less than 10 characters`,
+        length:  v => (v && v.length <= 15) || `Name must be less than 15 characters`,
         required: v => !!v || 'This field is required',
       },      
     }

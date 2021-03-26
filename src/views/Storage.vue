@@ -76,23 +76,20 @@
                 
                 <v-subheader>Uploaded</v-subheader>
                 <v-row>
-                    <v-col cols="12" xs="12" sm="6" md="4" lg="2" v-for="item in files" :key="item._id">
+                    <v-col cols="12" xs="12" sm="6" md="4" lg="2" v-for="item in uploadedFiles" :key="item._id">
                         <v-card 
                             elevation="5"
-                            max-width="350"
+                            max-width="400"
                         >
-                            <v-list-item three-line>
-                                <v-list-item-content>
-                                    <div class="overline mb-4">
-                                        <v-chip class="ma-2" x-small color="indigo" text-color="white">{{item.type}}</v-chip> 
-                                    </div>
-                                    <v-list-item-title class="headline mb-1">
-                                        {{item.filename}}
-                                    </v-list-item-title>
-                                    <v-list-item-subtitle>{{item.description}}</v-list-item-subtitle>
-                                </v-list-item-content>
-                            </v-list-item>
-
+                            <v-card-title>
+                                <span class="title">{{item.filename}}</span>
+                            </v-card-title>
+                            <v-card-subtitle>
+                                <v-chip label small>{{item.type}}</v-chip>
+                            </v-card-subtitle>
+                            <v-card-text>
+                                Our blouses are available in 8 colors. You can custom order a built-in arch support for any of the models.
+                            </v-card-text>
                             <v-card-actions>
                                 <v-btn color="red lighten-1" dark x-small elevation="3" @click="deleteFile(item._id)">Delete</v-btn>
                                 <v-btn color="green lighten-1" dark x-small elevation="3" @click="download(item._id, item.filename)">Download</v-btn>
@@ -101,13 +98,35 @@
                     </v-col>
                 </v-row>
                 <v-subheader>Results</v-subheader>
+                <v-row>
+                    <v-col cols="12" xs="12" sm="6" md="4" lg="2" v-for="item in resultFiles" :key="item._id">
+                        <v-card 
+                            elevation="5"
+                            max-width="450"
+                        >
+                            <v-card-title>
+                                <span class="title">{{item.filename}}</span>
+                            </v-card-title>
+                            <v-card-subtitle>
+                                <v-chip label small>{{item.type}}</v-chip>
+                            </v-card-subtitle>
+                            <v-card-text>
+                                {{item.description}}
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn color="red lighten-1" dark x-small elevation="3" @click="deleteFile(item._id)">Delete</v-btn>
+                                <v-btn color="green lighten-1" dark x-small elevation="3" @click="download(item._id, item.filename)">Download</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-card-text>
         </v-card>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions} from 'vuex'
+import { mapState, mapActions, mapGetters} from 'vuex'
     export default {
         name:'Storage',
         data() {
@@ -133,7 +152,8 @@ import { mapState, mapActions} from 'vuex'
             }
         },
         computed: {
-            ...mapState(['files'])
+            ...mapState(['files']),
+            ...mapGetters(['uploadedFiles', 'resultFiles'])
         },
         mounted () {
         },

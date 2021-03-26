@@ -8,29 +8,97 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" md=3>
-           <v-card class="pa-3">
-             <v-form ref="form" v-model="form">
-               <v-row>
+           <v-card color="grey lighten-4">
+             <v-card-text>
+                <v-form ref="form" v-model="form">
+                  <v-row>
+                    <v-col cols="12">
+                      <v-checkbox  v-model="input.paired" label="Paired-end Sequencing"></v-checkbox>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="input.basename"
+                        :counter="15"
+                        label="Basename"
+                        type="text"
+                        hint="Basename good outfiles"
+                        :rules="[rules.required, rules.length]"
+                    ></v-text-field>
+                  </v-col>
                  <v-col cols="12">
-                   <v-checkbox v-model="input.paired" label="Paired-end Sequencing"></v-checkbox>
+                   <v-select 
+                    v-model="input.fq1" 
+                    :items="fastqFiles" 
+                    item-text="filename" 
+                    item-value="path" 
+                    label="Forward reads"
+                    dense
+                    :rules="[rules.required]"
+                  >
+                  </v-select>
                  </v-col>
-                 <v-col cols="12" md="4">
-                   <v-text-field v-model="input.trimq" label="Quality trimming"></v-text-field>
+                 <v-col cols="12">
+                   <v-select 
+                    v-model="input.fq2" 
+                    :items="fastqFiles" 
+                    item-text="filename" 
+                    item-value="path" 
+                    label="Reverse reads" 
+                    :disabled="!input.paired"
+                    dense
+                  >
+                  </v-select>
                  </v-col>
-                 <v-col cols="12" md="8">
+                 <v-col cols="12" md="6">
                    <v-select
                         v-model="input.qtrim"
+                        :menu-props="{ top: true, offsetY: true }"
                         :items="qtrim"
                         label="Side triming"
                         item-text="text"
                         item-value="value"
+                        dense
+                        hint="Trim read ends to remove bases with quality below trimq"
                     ></v-select>
                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                        v-model="input.trimq"
+                        label="Trim side quality"
+                        class="mt-0 pt-0"
+                        type="number"
+                        max=100
+                        min=10
+                        hint="Regions with average quality BELOW this will be trimmed"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                        v-model="input.length"
+                        label="Length required"
+                        class="mt-0 pt-0"
+                        type="number"
+                        max=100
+                        min=10
+                        hint="Reads shorter than this after trimming will be discarded."
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                        v-model="input.minavgquality"
+                        label="Average quality"
+                        class="mt-0 pt-0"
+                        type="number"
+                        max=100
+                        min=10
+                        hint="Reads with average quality (after trimming) below 
+                    this will be discarded."
+                    ></v-text-field>
+                  </v-col>             
                </v-row>
              </v-form>
+             </v-card-text>
              <v-card-actions>
-                <v-btn @click="$refs.form.reset()"> Clear</v-btn>
-                <v-spacer></v-spacer>
                 <v-btn 
                   :disabled="!form" 
                   class="white--text"
@@ -47,6 +115,16 @@
             <v-card>
               <v-card-text>
                 <p> “Duk” stands for Decontamination Using Kmers. BBDuk was developed to combine most common data-quality-related trimming, filtering, and masking operations into a single high-performance tool.</p>
+                 <v-btn
+                    color="success"
+                    class="mt-12"
+                    @click="overlay = !overlay"
+                  >
+                    Show Overlay
+                  </v-btn>
+
+                  
+                {{result}}
               </v-card-text>
             </v-card>
           </v-col>
@@ -58,18 +136,23 @@
 
 <script>
 // @ is an alias to /src
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Bbduk',
   data(){
     return {
       form: false,
+      absolute: true,
+      overlay: false,
       input: {
         paired: true,
+        basename: '',
         fq1: '',
         fq2: '',
+        minavgquality: 20,
         trimq : 20,
-        qtrim : 'Both',
+        qtrim : 'rl',
         length: 35,
         user: this.$store.state.user
       },
@@ -77,8 +160,16 @@ export default {
         {text: 'Both', value: 'rl'},
         {text: 'Rigth End', value: 'r'},
         {text: 'Left End', value: 'l'}
-      ]
+      ],
+      rules: {
+        required: v => !!v || 'This field is required',
+        length:  v => (v && v.length <= 15) || `Name must be less than 10 characters`,
+      }, 
+      result: ''
     }
+  },
+  computed: {
+    ...mapGetters(['fastqFiles'])
   },
 
   methods: {
@@ -86,6 +177,7 @@ export default {
       try {
         let res = await this.axios.post('/biotools/bbduk', this.input)
         console.log(res.data)
+        this.result = res.data.result
       } catch (error) {
         console.log(error)
       }

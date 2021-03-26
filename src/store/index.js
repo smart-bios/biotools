@@ -70,6 +70,14 @@ export default new Vuex.Store({
 
     fastqFiles(state) {
       return state.files.filter(f => f.type == 'fastq')
+    },
+
+    uploadedFiles(state) {
+      return state.files.filter(f => f.category == 'uploaded')
+    },
+    
+    resultFiles(state) {
+      return state.files.filter(f => f.category == 'result')
     }
   }
 })
