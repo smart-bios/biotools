@@ -1,6 +1,6 @@
 <template>
   <div class="augustus">
-    <v-card elevation="12">
+    <v-card elevation="12" min-height="750">
       <v-card-title>Augustus</v-card-title>
       <v-card-subtitle>
 

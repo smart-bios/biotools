@@ -1,6 +1,6 @@
 <template>
     <div class="storgae">
-        <v-card elevation="18">
+        <v-card elevation="12" min-height="750">
             <v-card-title>Storage</v-card-title>
             <v-card-subtitle>Almacenamiento de archivos subidos y resultados generados</v-card-subtitle>
             <v-card-text>

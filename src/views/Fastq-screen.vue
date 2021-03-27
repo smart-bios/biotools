@@ -1,6 +1,6 @@
 <template>
   <div class="fastq-screen">
-    <v-card elevation="12">
+    <v-card elevation="12" min-height="750">
       <v-card-title>FastQ Screen</v-card-title>
       <v-card-subtitle>
         <i>Wingett SW, Andrews S</i>. <b>FastQ Screen: A tool for multi-genome mapping and quality control.</b> F1000Res. 2018;7:1338. Published 2018 Aug 24. <a href="https://dx.doi.org/10.12688%2Ff1000research.15931.2" target="_blank">doi:10.12688/f1000research.15931.2</a>

@@ -1,6 +1,6 @@
 <template>
     <div class="blast">
-        <v-card  min-height="700">
+        <v-card elevation="12" min-height="750">
             <v-card-title>Blast</v-card-title>
             <v-card-subtitle>Search a nucleotide database using a nucleotide query.</v-card-subtitle>
             <v-card-text>

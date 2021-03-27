@@ -1,6 +1,6 @@
 <template>
   <div class="bbduk">
-    <v-card elevation="12">
+    <v-card elevation="12" min-height="750">
       <v-card-title>BBDuk</v-card-title>
       <v-card-subtitle>
         Adapter/Quality Trimming and Filtering
@@ -115,22 +115,20 @@
             <v-card>
               <v-card-text>
                 <p> “Duk” stands for Decontamination Using Kmers. BBDuk was developed to combine most common data-quality-related trimming, filtering, and masking operations into a single high-performance tool.</p>
-                 <v-btn
-                    color="success"
-                    class="mt-12"
-                    @click="overlay = !overlay"
-                  >
-                    Show Overlay
-                  </v-btn>
-
-                  
-                {{result}}
+                  <pre>{{result}}</pre>                
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
       </v-card-text>
     </v-card>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+       <p class="text-center"><b>Runing BBDuk<br>Please wait...</b></p>
+    </v-overlay>
   </div>
 </template>
 
@@ -171,13 +169,21 @@ export default {
   computed: {
     ...mapGetters(['fastqFiles'])
   },
+  watch: {
+      overlay (val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 3000)
+      },
+    },
 
   methods: {
     async runBBDuk() {
       try {
+        this.overlay = true
         let res = await this.axios.post('/biotools/bbduk', this.input)
-        console.log(res.data)
         this.result = res.data.result
+        this.overlay = false
       } catch (error) {
         console.log(error)
       }

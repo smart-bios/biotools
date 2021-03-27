@@ -1,6 +1,6 @@
 <template>
   <div class="prokka">
-    <v-card elevation="12">
+    <v-card elevation="12" min-height="750">
       <v-card-title>ProKKA</v-card-title>
       <v-card-subtitle>
         <i>Seemann T.</i> <b>Prokka: rapid prokaryotic genome annotation</b> Bioinformatics 2014 Jul 15;30(14):2068-9. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24642063" target="_blank">PMID:24642063</a>
