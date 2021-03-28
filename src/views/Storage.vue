@@ -216,18 +216,6 @@ import { mapState, mapActions, mapGetters} from 'vuex'
                 this.file.description = ''
                 
             }
-            //...mapActions(['loadStorage'])
-           /*  async loadFiles(){
-                
-                try {
-                    let res= await this.axios.get(`/storage/find/6042a3a2c62d9162af2a0c08`)
-                    this.files = res.data.result
-                } catch (error) {
-                    console.log(error)
-                }
-
-
-            }, */
         }
         
     }

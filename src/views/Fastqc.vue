@@ -5,10 +5,10 @@
       <v-card-subtitle><i>Andrews S.</i> (2010). <b>FastQC: a quality control tool for high throughput sequence data</b> Available online at: <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc" target="_blank">http://www.bioinformatics.babraham.ac.uk/projects/fastqc</a></v-card-subtitle>
       <v-card-text>
         <p>FastQC permite realizar controles de calidad en archivos de secuencias obtenidos de métodos de secuenciación. Aporta un conjunto de análisis que te pueden dar una idea general rápida de si los datos tienen algún problema antes de proseguir con el análisis o si por el contrario cumplen los estándares de calidad aportados por el sistema.</p> 
-<v-select 
+      <v-select 
       dense 
       v-model="input.file" 
-      :items="fastqFiles" 
+      :items="fastaFiles" 
       item-text="filename" 
       item-value="_id" 
       label="Assembly" 
@@ -37,7 +37,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['fastqFiles'])
+    ...mapGetters(['fastaFiles'])
   }
 
 }

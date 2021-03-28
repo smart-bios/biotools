@@ -26,7 +26,7 @@
                     ></v-text-field>
                   </v-col>
                  <v-col cols="12">
-                   <v-select 
+                  <v-select 
                     v-model="input.fq1" 
                     :items="fastqFiles" 
                     item-text="filename" 
