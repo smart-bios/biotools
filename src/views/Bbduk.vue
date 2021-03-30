@@ -169,13 +169,6 @@ export default {
   computed: {
     ...mapGetters(['fastqFiles'])
   },
-  watch: {
-      overlay (val) {
-        val && setTimeout(() => {
-          this.overlay = false
-        }, 3000)
-      },
-    },
 
   methods: {
     async runBBDuk() {
