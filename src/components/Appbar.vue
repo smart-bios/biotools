@@ -61,7 +61,7 @@
                 </v-btn>
                 <v-divider vertical></v-divider>
 
-                <v-btn text @click="logout">
+                <v-btn text @click="logout(user._id)">
                     <span class="mr-2">Logout</span>
                 </v-btn>
             </div>

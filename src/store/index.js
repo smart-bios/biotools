@@ -55,11 +55,15 @@ export default new Vuex.Store({
       }   
     },
 
-    logout({commit}){
-      commit("setToken", '');
-      commit("setUser", {});
-      window.localStorage.removeItem("token");
-      router.push({name: 'Login'}, () => {});
+    async logout({commit}, user){
+      let res = await axios.post('/user/logout', {user})
+      if(res){
+        commit("setToken", '');
+        commit("setUser", {});
+        window.localStorage.removeItem("token");
+        router.push({name: 'Home'}, () => {});
+      }
+     
     }
   },
 

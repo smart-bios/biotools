@@ -24,7 +24,17 @@ export default {
   },
   created () {
     this.$store.dispatch("autoLogin");
+    this.user()
   },
-
+  methods: {
+    user() {
+      if(this.$store.state.user){
+        this.$store.dispatch("loadStorage", this.$store.state.user._id);
+      }else{
+        console.log('No existe el usuario')
+      }
+      
+    }
+  },
 };
 </script>

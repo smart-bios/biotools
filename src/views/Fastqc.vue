@@ -5,7 +5,7 @@
       <v-card-subtitle>A quality control tool for high throughput sequence data</v-card-subtitle>
       <v-card-text>
         <v-row>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="2">
             <v-card color="grey lighten-4">
               <v-card-text>
                 <v-form ref="form" v-model="form">
@@ -15,6 +15,7 @@
                     item-text="filename" 
                     item-value="path"
                     label="Fastq file" 
+                    :rules="[rules.required]"
                   >
                   </v-select>
                 </v-form>
@@ -31,7 +32,7 @@
               </v-card-actions>
             </v-card>
           </v-col>
-          <v-col cols="12" md="9">
+          <v-col cols="12" md="10">
             <v-card>
               <v-card-text>
                 <p>FastQC permite realizar controles de calidad en archivos de secuencias obtenidos de métodos de secuenciación. Aporta un conjunto de análisis que te pueden dar una idea general rápida de si los datos tienen algún problema antes de proseguir con el análisis o si por el contrario cumplen los estándares de calidad aportados por el sistema.</p> 
@@ -49,7 +50,9 @@
                           <v-card-text>
                             <div v-for="item in result.summary" :key="item.module">
                               <p>
-                                <v-chip small :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
+                                <v-chip link small :color="getColor(item.status)" dark>
+                                  {{ item.status }}
+                                </v-chip>                                
                                  {{ item.module }}
                               </p>
                             </div>
@@ -109,9 +112,13 @@ export default {
       form :false,
       overlay : false,
       show: false,
+      dialog: false,
       input: {
         fastq: '',
         user: this.$store.state.user
+      },
+      rules: {
+        required: v => !!v || 'This field is required',
       },
       result: '',
     }
