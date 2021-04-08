@@ -11,6 +11,18 @@
             <v-card color="grey lighten-4">
               <v-card-text>
                 <v-form ref="form" v-model="form">
+
+                  <v-text-field 
+                    v-model="input.basename" 
+                    label="Basename" 
+                    type="text"
+                    hint=" Specify a directory name in which to save output files."
+                    persistent-hint
+                    :rules="[rules.required]"
+                    class="mb-4"
+                  >
+                  </v-text-field>
+
                   <v-select 
                     v-model="input.fastq" 
                     :items="fastqFiles" 
@@ -70,7 +82,10 @@
             <v-card>
               <v-card-text>
                 <p> FastQ Screen is an application which allows you to search a FastQ sequence file against a set of sequence databases and summarises the results. It is useful for incorporating into a sequencing pipeline to identify sources of contamination or mislabeled samples.</p>
-                <pre>{{result}}</pre>
+               {{result}}
+                <!-- <div v-html="result"></div> -->
+
+                <!-- <img alt="Awesome logo" :src="'data:image/png;base64,'+result" /> -->
               </v-card-text>
             </v-card>
           </v-col>
@@ -92,6 +107,7 @@ export default {
       show: false,
       databases: ['/bowtie2/adapters', '/bowtie2/vectors', '/bowtie2/viral'],
       input: {
+        basename: 'fqscreen',
         fastq: '',
         databases: [],
         subset: 100000,
